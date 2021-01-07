@@ -2,7 +2,7 @@ sudo: required
 
 language: generic
 
-services: generic
+services: 
     - docker
 
 before_install:
@@ -11,6 +11,19 @@ before_install:
 
 script:
     - docker run -e CI=true degan8585/docker-react-app1 npm run test -- --coverage
+
+deploy: 
+    provider: elasticbeanstalk
+    region: "ap-northeast-2"
+    app: "docker-react-app1"
+    env: "DockerReactApp1-env"
+    bucket_name: "elasticbeanstalk-ap-northeast-2-744388353488"
+    bucket_path: "docker-react-app1"
+    on:
+        branch: master
+
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
 
 after_success:
     - echo "Test success"
